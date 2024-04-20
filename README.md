@@ -26,7 +26,8 @@
 O Projeto em questão refere-se à uma REST API para gerenciamento de ONGs e seus Pets. Apesar da limitação das informações e métodos,
 a arquitetura pode ser utilizada como referência para as demais APIs do Projeto. Dentre as Rotas da Aplicação, encontramos: 
 
-### Ongs Parceiras 🤝
+<details>
+<summary><strong>Ongs Parceiras 🤝</strong></summary>
 
 A controller `PartnersController` oferece as seguintes funcionalidades para lidar com Ongs Parceiras:
 
@@ -66,7 +67,7 @@ A controller `PartnersController` oferece as seguintes funcionalidades para lida
      - `partner`: Dados atualizados da Ong Parceira.
    - Respostas:
      - `200 OK`: Retorna a Ong Parceira atualizada com sucesso.
-     - `404 Not Found`: Se a Ong Parceira não for encontrada.
+     - `204 No Content`: Se a Ong Parceira não for encontrada.
      - `400 Bad Request`: Em caso de dados inválidos ou faltando.
      - `500 Internal Server Error`: Em caso de erro no servidor.
 
@@ -77,11 +78,14 @@ A controller `PartnersController` oferece as seguintes funcionalidades para lida
      - `partnerId`: ID da Ong Parceira a ser excluída.
    - Respostas:
      - `200 OK`: Retorna `true` se a Ong Parceira foi excluída com sucesso.
-     - `404 Not Found`: Se a Ong Parceira não for encontrada.
+     - `204 No Content`: Se a Ong Parceira não for encontrada.
      - `400 Bad Request`: Em caso de dados inválidos ou faltando.
      - `500 Internal Server Error`: Em caso de erro no servidor.
 
-### Pets 🐾
+</details>
+
+<details>
+<summary><strong>Pets 🐾</strong></summary>
 
 A controller `PetsController` oferece as seguintes funcionalidades para lidar com Pets:
 
@@ -94,7 +98,7 @@ A controller `PetsController` oferece as seguintes funcionalidades para lidar co
      - `pageSize`: Quantidade de Pets por página (padrão: 10).
    - Respostas:
      - `200 OK`: Retorna a lista de Pets paginada.
-     - `404 Not Found`: Se o parceiro não for encontrado.
+     - `204 No Content`: Se o parceiro não for encontrado.
      - `500 Internal Server Error`: Em caso de erro no servidor.
 
 2. **Recuperação de Pets Filtrados por Critérios Específicos**:
@@ -107,7 +111,7 @@ A controller `PetsController` oferece as seguintes funcionalidades para lidar co
      - `filter`: Filtro a ser aplicado (objeto PetFilter).
    - Respostas:
      - `200 OK`: Retorna a lista de Pets filtrada e paginada.
-     - `404 Not Found`: Se o parceiro não for encontrado.
+     - `204 No Content`: Se o parceiro não for encontrado.
      - `500 Internal Server Error`: Em caso de erro no servidor.
 
 3. **Recuperação de um Pet Específico por ID**:
@@ -117,7 +121,7 @@ A controller `PetsController` oferece as seguintes funcionalidades para lidar co
      - `petId`: ID do Pet a ser recuperado.
    - Respostas:
      - `200 OK`: Retorna o Pet correspondente ao ID fornecido.
-     - `404 Not Found`: Se o Pet não for encontrado.
+     - `204 No Content`: Se o Pet não for encontrado.
      - `500 Internal Server Error`: Em caso de erro no servidor.
 
 4. **Recuperação do Status de um Pet por ID**:
@@ -127,7 +131,7 @@ A controller `PetsController` oferece as seguintes funcionalidades para lidar co
      - `petId`: ID do Pet a ser consultado.
    - Respostas:
      - `200 OK`: Retorna o status do Pet correspondente ao ID fornecido.
-     - `404 Not Found`: Se o Pet não for encontrado.
+     - `204 No Content`: Se o Pet não for encontrado.
      - `500 Internal Server Error`: Em caso de erro no servidor.
 
 5. **Criação de um Novo Pet**:
@@ -146,7 +150,7 @@ A controller `PetsController` oferece as seguintes funcionalidades para lidar co
      - `pet`: Dados atualizados do Pet.
    - Respostas:
      - `200 OK`: Retorna o Pet atualizado com sucesso.
-     - `404 Not Found`: Se o Pet não for encontrado.
+     - `204 No Content`: Se o Pet não for encontrado.
      - `500 Internal Server Error`: Em caso de erro no servidor.
 
 7. **Atualização do Status de um Pet Existente**:
@@ -157,7 +161,7 @@ A controller `PetsController` oferece as seguintes funcionalidades para lidar co
      - `status`: Novo status do Pet.
    - Respostas:
      - `200 OK`: Retorna o status do Pet atualizado com sucesso.
-     - `404 Not Found`: Se o Pet não for encontrado.
+     - `204 No Content`: Se o Pet não for encontrado.
      - `500 Internal Server Error`: Em caso de erro no servidor.
 
 8. **Exclusão de um Pet Existente**:
@@ -167,8 +171,10 @@ A controller `PetsController` oferece as seguintes funcionalidades para lidar co
      - `petId`: ID do Pet a ser excluído.
    - Respostas:
      - `200 OK`: Retorna `true` se o Pet foi excluído com sucesso.
-     - `404 Not Found`: Se o Pet não for encontrado.
+     - `204 No Content`: Se o Pet não for encontrado.
      - `500 Internal Server Error`: Em caso de erro no servidor.
+
+</details>
 
 ## Instalação 🔧
 - Clone o repositório com o seguinte comando: `git clone https://github.com/andrecini/web-api-pattern.git`
