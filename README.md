@@ -176,7 +176,7 @@ A controller `PetsController` oferece as seguintes funcionalidades para lidar co
 
 </details>
 
-### Instalação 🔧
+## Instalação 🔧
 
 1. **Clone o repositório**:
    - Execute o comando no terminal:
