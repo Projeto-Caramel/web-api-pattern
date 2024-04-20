@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<NoWarn>$(NoWarn);1591</NoWarn>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\Domain\Caramel.Pattern.Services.Domain\Caramel.Pattern.Services.Domain.csproj" />
+		<ProjectReference Include="..\..\Infrastructure\Caramel.Pattern.Services.Infra\Caramel.Pattern.Services.Infra.csproj" />
+		<ProjectReference Include="..\Caramel.Pattern.Services.Application\Caramel.Pattern.Services.Application.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="Models\Requests\" />
+	</ItemGroup>
+
+</Project>

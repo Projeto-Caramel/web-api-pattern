@@ -1,0 +1,6 @@
+@Caramel.Pattern.Services.Api.Example_HostAddress = http://localhost:5218
+
+GET {{Caramel.Pattern.Services.Api.Example_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
