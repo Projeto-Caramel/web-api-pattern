@@ -176,11 +176,41 @@ A controller `PetsController` oferece as seguintes funcionalidades para lidar co
 
 </details>
 
-## Instalação 🔧
-- Clone o repositório com o seguinte comando: `git clone https://github.com/andrecini/web-api-pattern.git`
-- Abra a Solution na pasta do Projeto
-- Intale as dependências do Projeto
-- Altere a ConnectionString no Arquivo de appSettings para o seu Banco de Dados
-- Crie as tabelas no Database a partir da Migration com o seguinte comando no Nuget Package Manager: `update-database`
-- Rode a aplicação
+### Instalação 🔧
+
+1. **Clone o repositório**:
+   - Execute o comando no terminal:
+     ```
+     git clone https://github.com/andrecini/web-api-pattern.git
+     ```
+
+2. **Abra a Solution**:
+   - Navegue até o diretório clonado e abra a Solution (`web-api-pattern.sln`) em sua IDE preferida.
+
+3. **Instale as dependências do projeto**:
+   - Certifique-se de que todas as dependências do projeto estão instaladas. Você pode fazer isso restaurando os pacotes NuGet. Você pode usar o Visual Studio para isso ou executar o seguinte comando no terminal:
+     ```
+     dotnet restore
+     ```
+
+4. **Altere a ConnectionString**:
+   - No arquivo `appSettings.json`, localize a seção onde está definida a ConnectionString e substitua-a pelo caminho correto do seu banco de dados:
+     ```json
+     "ConnectionStrings": {
+       "DefaultConnection": "SuaConnectionStringAqui"
+     }
+     ```
+
+5. **Execute a migração para criar as tabelas no banco de dados**:
+   - Abra o NuGet Package Manager Console e execute o seguinte comando para aplicar as migrações e criar as tabelas no banco de dados:
+     ```
+     update-database
+     ```
+
+6. **Rode a aplicação**:
+   - Inicie a aplicação a partir da IDE ou execute o seguinte comando no terminal:
+     ```
+     dotnet run
+     ```
+
 
