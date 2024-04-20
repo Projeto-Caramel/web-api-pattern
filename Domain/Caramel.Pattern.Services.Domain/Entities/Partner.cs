@@ -1,7 +1,12 @@
-﻿namespace Caramel.Pattern.Services.Domain.Entities
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Caramel.Pattern.Services.Domain.Entities
 {
-    public class Partner : IEntity<int> 
+    public class Partner : IEntity<int>
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string? Name { get; set; }
         public string? Description { get; set; }
