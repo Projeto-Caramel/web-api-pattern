@@ -83,7 +83,7 @@ namespace Caramel.Pattern.Services.Api.Example.Controllers.v1
         /// <returns>Parceiro Atualizado, Status do Processo e Descrição</returns>
         [HttpPut("/api/partner")]
         [ProducesResponseType(typeof(CustomResponse<Partner>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
         public IActionResult PutPartner(Partner partner)
@@ -102,7 +102,7 @@ namespace Caramel.Pattern.Services.Api.Example.Controllers.v1
         /// <returns>Parceiro Deletado, Status do Processo e Descrição</returns>
         [HttpDelete("/api/partner")]
         [ProducesResponseType(typeof(CustomResponse<Partner>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> DeletePartner(int partnerId)

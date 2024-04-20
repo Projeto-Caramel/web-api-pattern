@@ -30,7 +30,7 @@ namespace Caramel.Pattern.Services.Api.Example.Controllers.v1
         /// <returns>Lista de Pets, Status do Processo e Descrição</returns>
         [HttpGet("/api/pets")]
         [ProducesResponseType(typeof(CustomResponse<Pet>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetPets(int partnerId, int page, int pageSize)
         {
@@ -53,7 +53,7 @@ namespace Caramel.Pattern.Services.Api.Example.Controllers.v1
         /// <returns>Lista de Pets Filtrados, Status do Processo e Descrição.</returns>
         [HttpGet("/api/pets-filtered")]
         [ProducesResponseType(typeof(CustomResponse<Pet>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetPetsFiltered(int partnerId, int page, int pageSize, PetFilter filter)
         {
@@ -73,7 +73,7 @@ namespace Caramel.Pattern.Services.Api.Example.Controllers.v1
         /// <returns>Pet, Status do Processo e Descrição.</returns>
         [HttpGet("/api/pet")]
         [ProducesResponseType(typeof(CustomResponse<Pet>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetPet(int petId)
         {
@@ -91,7 +91,7 @@ namespace Caramel.Pattern.Services.Api.Example.Controllers.v1
         /// <returns>Status do Pet, Status do Processo e Descrição.</returns>
         [HttpGet("/api/pet/status")]
         [ProducesResponseType(typeof(CustomResponse<Pet>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetPetStatus(int petId)
         {
@@ -126,7 +126,7 @@ namespace Caramel.Pattern.Services.Api.Example.Controllers.v1
         /// <returns>Pet Atualizado, Status do Processo e Descrição.</returns>
         [HttpPut("/api/pet")]
         [ProducesResponseType(typeof(CustomResponse<PetStatus>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
         public IActionResult PutPet(Pet pet)
         {
@@ -144,7 +144,7 @@ namespace Caramel.Pattern.Services.Api.Example.Controllers.v1
         /// <returns>Pet Atualizado, Status do Processo e Descrição.</returns>
         [HttpPatch("/api/pet/status")]
         [ProducesResponseType(typeof(CustomResponse<PetStatus>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> PutPet(int petId, PetStatus status)
         {
@@ -162,7 +162,7 @@ namespace Caramel.Pattern.Services.Api.Example.Controllers.v1
         /// <returns>Uma CustomResponse contendo o objeto Pet atualizado ou uma mensagem de erro.</returns>
         [HttpDelete("/api/pet")]
         [ProducesResponseType(typeof(CustomResponse<PetStatus>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> DeletePet(int petId)
         {
