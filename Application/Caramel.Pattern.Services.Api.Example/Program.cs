@@ -1,14 +1,11 @@
-using Caramel.Pattern.Services.Infra;
-using Caramel.Pattern.Services.Application;
 using Caramel.Pattern.Services.Api.Example.Middlewares;
+using Caramel.Pattern.Services.Application;
+using Caramel.Pattern.Services.Domain.AutoMapper;
+using Caramel.Pattern.Services.Infra;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
-using System.Text.Json;
-using Microsoft.Extensions.Options;
-using Microsoft.AspNetCore.Http.Json;
-using System.Text.Json.Serialization;
 using System.Text.Encodings.Web;
-using Caramel.Pattern.Services.Domain.AutoMapper;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 

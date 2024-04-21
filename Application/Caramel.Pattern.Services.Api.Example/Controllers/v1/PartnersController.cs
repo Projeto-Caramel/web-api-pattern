@@ -3,11 +3,8 @@ using Caramel.Pattern.Services.Domain.Entities;
 using Caramel.Pattern.Services.Domain.Entities.Models.Request;
 using Caramel.Pattern.Services.Domain.Entities.Models.Responses;
 using Caramel.Pattern.Services.Domain.Enums;
-using Caramel.Pattern.Services.Domain.Exceptions;
 using Caramel.Pattern.Services.Domain.Services;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Net;
 
 namespace Caramel.Pattern.Services.Api.Example.Controllers.v1
 {
