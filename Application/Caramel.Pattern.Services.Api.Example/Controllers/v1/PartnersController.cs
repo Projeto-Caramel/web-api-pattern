@@ -100,7 +100,7 @@ namespace Caramel.Pattern.Services.Api.Example.Controllers.v1
         [ProducesResponseType(typeof(ExceptionResponse), StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(typeof(ExceptionResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ExceptionResponse), StatusCodes.Status500InternalServerError)]
-        public IActionResult PutPartner(int partnerId, Partner partnerRequest)
+        public IActionResult PutPartner(int partnerId, PartnerRequest partnerRequest)
         {
             var partner = _mapper.Map<Partner>(partnerRequest);
             partner.Id = partnerId;

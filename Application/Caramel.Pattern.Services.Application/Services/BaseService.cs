@@ -15,11 +15,9 @@ namespace Caramel.Pattern.Services.Application.Services
             _unitOfWork = unitOfWork;
         }
 
-        protected void ValidateEntity<T, TEntity>(TEntity entity, string entityName)
+        protected void ValidateEntity<T, TEntity>(TEntity entity)
             where T : AbstractValidator<TEntity>, new()
         {
-            BusinessException.ThrowIfNull(entity, entityName);
-
             var validatorInstance = new T();
             var result = validatorInstance.Validate(entity);
 

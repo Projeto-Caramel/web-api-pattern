@@ -42,7 +42,8 @@ namespace Caramel.Services.Pattern.Tests.Mocks.Data
                     AdoptionRate = 100
                 }
             },
-            { "Empty", new Partner() },
+            { "Empty", new Partner() { Id = 1 } },
+            { "WithoutId", new Partner() },
             { "Null", null },
         };
     }

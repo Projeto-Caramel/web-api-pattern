@@ -7,7 +7,6 @@ namespace Caramel.Pattern.Services.Domain.Validators
     {
         public PartnerValidator()
         {
-            RuleFor(x => x.Id).GreaterThan(0).WithMessage("O ID deve ser maior do que 0.");
             RuleFor(x => x.Name).NotNull().NotEmpty().WithMessage("O campo Nome é Obrigatório.");
             RuleFor(x => x.Email).NotNull().NotEmpty().WithMessage("O campo Email é Obrigatório.");
             RuleFor(x => x.Phone).NotNull().NotEmpty().WithMessage("O campo Telefone é Obrigatório.");

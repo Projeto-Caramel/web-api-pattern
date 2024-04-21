@@ -163,7 +163,8 @@ namespace Caramel.Services.Pattern.Tests.Mocks.Data
                     Status = PetStatus.Available
                 }
             },
-            { "Empty", new Pet() },
+            { "Empty", new Pet() { Id = 1 } },
+            { "WithoutId", new Pet() },
             { "Null", null },
         };
     }

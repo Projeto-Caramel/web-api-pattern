@@ -12,26 +12,26 @@
           "Partners"
         ],
         "summary": "Recupera uma lista de todos os Parceiros.",
-        "parameters": [
-          {
-            "name": "page",
-            "in": "query",
-            "description": "Página. Se for igual a 0, por padrão será considerada a primeira página.",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "pageSize",
-            "in": "query",
-            "description": "Quantidade de Pets da Página. Se for igual a 0, por padrão será considerada os 10 primeiros Parceiros.",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
+        "requestBody": {
+          "description": "Página e Total de dados a serem trazidos. Default: Page = 1 e Size = 10",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Pagination"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Pagination"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/Pagination"
+              }
             }
           }
-        ],
+        },
         "responses": {
           "200": {
             "description": "Success",
@@ -81,21 +81,20 @@
         ],
         "summary": "Cria um novo parceiro.",
         "requestBody": {
-          "description": "Dados do novo Parceiro.",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Partner"
+                "$ref": "#/components/schemas/PartnerRequest"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/Partner"
+                "$ref": "#/components/schemas/PartnerRequest"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/Partner"
+                "$ref": "#/components/schemas/PartnerRequest"
               }
             }
           }
@@ -188,22 +187,33 @@
           "Partners"
         ],
         "summary": "Atualiza um parceiro existente.",
+        "parameters": [
+          {
+            "name": "partnerId",
+            "in": "query",
+            "description": "O ID do parceiro a ser Atualizado.",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
         "requestBody": {
           "description": "Dados Atualizados do Parceiro.",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Partner"
+                "$ref": "#/components/schemas/PartnerRequest"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/Partner"
+                "$ref": "#/components/schemas/PartnerRequest"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/Partner"
+                "$ref": "#/components/schemas/PartnerRequest"
               }
             }
           }
@@ -472,26 +482,28 @@
               "type": "integer",
               "format": "int32"
             }
-          },
-          {
-            "name": "page",
-            "in": "query",
-            "description": "Página. Se for igual a 0, por padrão será considerada a primeira página.",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "pageSize",
-            "in": "query",
-            "description": "Quantidade de Pets da Página. Se for igual a 0, por padrão será considerada os 10 primeiros Pets.",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
           }
         ],
+        "requestBody": {
+          "description": "Página e Total de dados a serem trazidos. Default: Page = 1 e Size = 10",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Pagination"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Pagination"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/Pagination"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Success",
@@ -565,17 +577,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Pet"
+                "$ref": "#/components/schemas/PetRequest"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/Pet"
+                "$ref": "#/components/schemas/PetRequest"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/Pet"
+                "$ref": "#/components/schemas/PetRequest"
               }
             }
           }
@@ -668,22 +680,33 @@
           "Pets"
         ],
         "summary": "Atualiza um pet existente.",
+        "parameters": [
+          {
+            "name": "petId",
+            "in": "query",
+            "description": "O ID do pet a ser Alterado.",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
         "requestBody": {
           "description": "O objeto Pet com dados atualizados.",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Pet"
+                "$ref": "#/components/schemas/PetRequest"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/Pet"
+                "$ref": "#/components/schemas/PetRequest"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/Pet"
+                "$ref": "#/components/schemas/PetRequest"
               }
             }
           }
@@ -787,42 +810,24 @@
               "type": "integer",
               "format": "int32"
             }
-          },
-          {
-            "name": "page",
-            "in": "query",
-            "description": "Página. Se for igual a 0, por padrão será considerada a primeira página.",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "pageSize",
-            "in": "query",
-            "description": "Quantidade de Pets da Página. Se for igual a 0, por padrão será considerada os 10 primeiros Pets.",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
           }
         ],
         "requestBody": {
-          "description": "O filtro a ser aplicado (objeto PetFilter).",
+          "description": "Página e Total de dados a serem trazidos e Filtro a ser realizado. Default: Page = 1 e Size = 10",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/PetFilter"
+                "$ref": "#/components/schemas/GetPetsFilteredRequest"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/PetFilter"
+                "$ref": "#/components/schemas/GetPetsFilteredRequest"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/PetFilter"
+                "$ref": "#/components/schemas/GetPetsFilteredRequest"
               }
             }
           }
@@ -1311,6 +1316,32 @@
         "type": "integer",
         "format": "int32"
       },
+      "GetPetsFilteredRequest": {
+        "type": "object",
+        "properties": {
+          "pagination": {
+            "$ref": "#/components/schemas/Pagination"
+          },
+          "petFilter": {
+            "$ref": "#/components/schemas/PetFilter"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Pagination": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
       "Partner": {
         "type": "object",
         "properties": {
@@ -1377,6 +1408,36 @@
           "description": {
             "type": "string",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PartnerRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "phone": {
+            "type": "string",
+            "nullable": true
+          },
+          "cnpj": {
+            "type": "string",
+            "nullable": true
+          },
+          "adoptionRate": {
+            "type": "number",
+            "format": "double"
           }
         },
         "additionalProperties": false
@@ -1451,6 +1512,37 @@
           },
           "status": {
             "$ref": "#/components/schemas/FilterPetStatus"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PetRequest": {
+        "type": "object",
+        "properties": {
+          "partnerId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "castrated": {
+            "type": "boolean"
+          },
+          "vaccinated": {
+            "type": "boolean"
+          },
+          "age": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "status": {
+            "$ref": "#/components/schemas/PetStatus"
           }
         },
         "additionalProperties": false

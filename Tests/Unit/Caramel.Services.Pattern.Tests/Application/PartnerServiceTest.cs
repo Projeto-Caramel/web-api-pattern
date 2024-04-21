@@ -125,6 +125,7 @@ namespace Caramel.Services.Pattern.Tests.Application
         }
 
         [Theory]
+        [InlineData("WithoutId", "O campo ID é obrigatório.", StatusProcess.InvalidRequest, HttpStatusCode.UnprocessableEntity)]
         [InlineData("Null", "O parâmetro Parceiro não pode ser nulo.", StatusProcess.InvalidRequest, HttpStatusCode.UnprocessableEntity)]
         [InlineData("BasicUpdateException", "Não foi possível Alterar o Parceiro.", StatusProcess.Failure, HttpStatusCode.BadRequest)]
         public void Update_BusinessExceptions(string key, string message, StatusProcess process, HttpStatusCode statusCode)

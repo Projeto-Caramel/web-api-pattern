@@ -7,7 +7,6 @@ namespace Caramel.Pattern.Services.Domain.Validators
     {
         public PetValidator()
         {
-            RuleFor(x => x.Id).GreaterThan(0).WithMessage("O ID deve ser maior do que 0.");
             RuleFor(x => x.PartnerId).GreaterThan(0).WithMessage("O Partner ID deve ser maior do que 0.");
             RuleFor(x => x.Name).NotNull().NotEmpty().WithMessage("O campo Nome é Obrigatório.");
             RuleFor(x => x.Description).NotNull().NotEmpty().WithMessage("O campo Descrição é Obrigatório.");

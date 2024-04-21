@@ -36,7 +36,9 @@ namespace Caramel.Pattern.Services.Application.Services
 
         public async Task<Partner> AddAsync(Partner entity)
         {
-            ValidateEntity<PartnerValidator, Partner>(entity, "Parceiro");
+            BusinessException.ThrowIfNull(entity, "Parceiro");
+
+            ValidateEntity<PartnerValidator, Partner>(entity);
 
             await _unitOfWork.Partners.AddAsync(entity);
 
@@ -50,7 +52,12 @@ namespace Caramel.Pattern.Services.Application.Services
 
         public Partner Update(Partner entity)
         {
-            ValidateEntity<PartnerValidator, Partner>(entity, "Parceiro");
+            BusinessException.ThrowIfNull(entity, "Parceiro");
+
+            if (entity.Id <= 0)
+                throw new BusinessException("O campo ID é obrigatório.", StatusProcess.InvalidRequest, HttpStatusCode.UnprocessableEntity);
+
+            ValidateEntity<PartnerValidator, Partner>(entity);
 
             _unitOfWork.Partners.Update(entity);
 

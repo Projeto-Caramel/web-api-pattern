@@ -5,14 +5,7 @@ using Caramel.Pattern.Services.Domain.Repositories.UnitOfWork;
 using Caramel.Pattern.Services.Domain.Services;
 using Caramel.Pattern.Services.Domain.Validators;
 using FluentValidation;
-using FluentValidation.Results;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Caramel.Pattern.Services.Application.Services
 {
@@ -65,7 +58,9 @@ namespace Caramel.Pattern.Services.Application.Services
 
         public async Task<Pet> AddAsync(Pet entity)
         {
-            ValidateEntity<PetValidator, Pet>(entity, "Pet");
+            BusinessException.ThrowIfNull(entity, "Pet");
+
+            ValidateEntity<PetValidator, Pet>(entity);
 
             await _unitOfWork.Pets.AddAsync(entity);
 
@@ -79,7 +74,12 @@ namespace Caramel.Pattern.Services.Application.Services
 
         public Pet Update(Pet entity)
         {
-            ValidateEntity<PetValidator, Pet>(entity, "Pet");
+            BusinessException.ThrowIfNull(entity, "Pet");
+
+            if (entity.Id <= 0)
+                throw new BusinessException("O campo ID é obrigatório.", StatusProcess.InvalidRequest, HttpStatusCode.UnprocessableEntity);
+
+            ValidateEntity<PetValidator, Pet>(entity);
 
             _unitOfWork.Pets.Update(entity);
 
@@ -120,7 +120,7 @@ namespace Caramel.Pattern.Services.Application.Services
             if (entity == null)
                 throw new BusinessException("Não foi possível encontrar nenhum Pet com essas informações.", StatusProcess.Failure, HttpStatusCode.UnprocessableEntity);
 
-            await _unitOfWork.Pets.AddAsync(entity);
+           _unitOfWork.Pets.Delete(entity);
 
             var result = _unitOfWork.Save();
 
