@@ -32,7 +32,7 @@ a arquitetura pode ser utilizada como referência para as demais APIs do Projeto
 A controller `PartnersController` oferece as seguintes funcionalidades para lidar com Ongs Parceiras:
 
 1. **Recuperação de Todas as Ongs Parceiras**: 
-   - Endpoint: `GET /api/partners`
+   - Endpoint: `GET /api/v1/partners`
    - Descrição: Recupera uma lista paginada de todas as Ongs Parceiras.
    - Parâmetros:
      - `page`: Página atual da lista (padrão: 1).
@@ -42,7 +42,7 @@ A controller `PartnersController` oferece as seguintes funcionalidades para lida
      - `500 Internal Server Error`: Em caso de erro no servidor.
 
 2. **Recuperação de uma Ong Parceira por ID**:
-   - Endpoint: `GET /api/partner/{partnerId}`
+   - Endpoint: `GET /api/v1/partners/{partnerId}`
    - Descrição: Recupera uma Ong Parceira específica com base no ID fornecido.
    - Parâmetros:
      - `partnerId`: ID da Ong Parceira a ser recuperada.
@@ -51,35 +51,36 @@ A controller `PartnersController` oferece as seguintes funcionalidades para lida
      - `500 Internal Server Error`: Em caso de erro no servidor.
 
 3. **Criação de uma Nova Ong Parceira**:
-   - Endpoint: `POST /api/partner`
+   - Endpoint: `POST /api/v1/partners`
    - Descrição: Cria uma nova Ong Parceira com base nos dados fornecidos.
    - Parâmetros:
      - `partner`: Dados da nova Ong Parceira a serem criados.
    - Respostas:
      - `201 Created`: Retorna a Ong Parceira criada com sucesso.
-     - `400 Bad Request`: Em caso de dados inválidos ou faltando.
+     - `422 Unprocessable Entity`: Em caso de dados inválidos ou faltando.
+     - `400 Bad Request`: Em caso de erro ao Adicionar o Parceiro.
      - `500 Internal Server Error`: Em caso de erro no servidor.
 
 4. **Atualização de uma Ong Parceira Existente**:
-   - Endpoint: `PUT /api/partner`
+   - Endpoint: `PUT /api/v1/partners`
    - Descrição: Atualiza os dados de uma Ong Parceira existente com base nos dados fornecidos.
    - Parâmetros:
      - `partner`: Dados atualizados da Ong Parceira.
    - Respostas:
      - `200 OK`: Retorna a Ong Parceira atualizada com sucesso.
-     - `204 No Content`: Se a Ong Parceira não for encontrada.
-     - `400 Bad Request`: Em caso de dados inválidos ou faltando.
+     - `422 Unprocessable Entity`: Em caso de dados inválidos ou faltando.
+     - `400 Bad Request`: Em caso de erro ao Atualizar o Parceiro.
      - `500 Internal Server Error`: Em caso de erro no servidor.
 
 5. **Exclusão de uma Ong Parceira por ID**:
-   - Endpoint: `DELETE /api/partner`
+   - Endpoint: `DELETE /api/v1/partners/{partnerId}`
    - Descrição: Exclui uma Ong Parceira específica com base no ID fornecido.
    - Parâmetros:
      - `partnerId`: ID da Ong Parceira a ser excluída.
    - Respostas:
-     - `200 OK`: Retorna `true` se a Ong Parceira foi excluída com sucesso.
-     - `204 No Content`: Se a Ong Parceira não for encontrada.
-     - `400 Bad Request`: Em caso de dados inválidos ou faltando.
+     - `204 No Content`:Em caso de a Ong Parceira foi excluída com sucesso.
+     - `422 Unprocessable Entity`: Em caso de dados inválidos ou faltando.
+     - `400 Bad Request`: Em caso de erro ao Excluir o Parceiro.
      - `500 Internal Server Error`: Em caso de erro no servidor.
 
 </details>
@@ -90,7 +91,7 @@ A controller `PartnersController` oferece as seguintes funcionalidades para lida
 A controller `PetsController` oferece as seguintes funcionalidades para lidar com Pets:
 
 1. **Recuperação de Pets de um Parceiro Específico**: 
-   - Endpoint: `GET /api/pets`
+   - Endpoint: `GET /api/v1/pets`
    - Descrição: Recupera uma lista paginada de Pets associados a um parceiro específico.
    - Parâmetros:
      - `partnerId`: ID do parceiro.
@@ -98,11 +99,11 @@ A controller `PetsController` oferece as seguintes funcionalidades para lidar co
      - `pageSize`: Quantidade de Pets por página (padrão: 10).
    - Respostas:
      - `200 OK`: Retorna a lista de Pets paginada.
-     - `204 No Content`: Se o parceiro não for encontrado.
+     - `422 Unprocessable Entity`: Em caso de dados inválidos ou faltando.
      - `500 Internal Server Error`: Em caso de erro no servidor.
 
 2. **Recuperação de Pets Filtrados por Critérios Específicos**:
-   - Endpoint: `GET /api/pets-filtered`
+   - Endpoint: `GET /api/v1/pets/filtered`
    - Descrição: Recupera uma lista paginada de Pets filtrada por critérios específicos para um parceiro.
    - Parâmetros:
      - `partnerId`: ID do parceiro.
@@ -111,67 +112,72 @@ A controller `PetsController` oferece as seguintes funcionalidades para lidar co
      - `filter`: Filtro a ser aplicado (objeto PetFilter).
    - Respostas:
      - `200 OK`: Retorna a lista de Pets filtrada e paginada.
-     - `204 No Content`: Se o parceiro não for encontrado.
+     - `422 Unprocessable Entity`: Em caso de dados inválidos ou faltando.
      - `500 Internal Server Error`: Em caso de erro no servidor.
 
 3. **Recuperação de um Pet Específico por ID**:
-   - Endpoint: `GET /api/pet`
+   - Endpoint: `GET "/api/v1/pets/{petId}`
    - Descrição: Recupera um Pet específico com base no ID fornecido.
    - Parâmetros:
      - `petId`: ID do Pet a ser recuperado.
    - Respostas:
      - `200 OK`: Retorna o Pet correspondente ao ID fornecido.
-     - `204 No Content`: Se o Pet não for encontrado.
+     - `422 Unprocessable Entity`: Em caso de dados inválidos ou faltando.
      - `500 Internal Server Error`: Em caso de erro no servidor.
 
 4. **Recuperação do Status de um Pet por ID**:
-   - Endpoint: `GET /api/pet/status`
+   - Endpoint: `GET /api/v1/pets/{petId}/status`
    - Descrição: Recupera o status de um Pet específico com base no ID fornecido.
    - Parâmetros:
      - `petId`: ID do Pet a ser consultado.
    - Respostas:
      - `200 OK`: Retorna o status do Pet correspondente ao ID fornecido.
-     - `204 No Content`: Se o Pet não for encontrado.
+     - `422 Unprocessable Entity`: Em caso de dados inválidos ou faltando.
      - `500 Internal Server Error`: Em caso de erro no servidor.
 
 5. **Criação de um Novo Pet**:
-   - Endpoint: `POST /api/pet`
+   - Endpoint: `POST /api/v1/pets`
    - Descrição: Cria um novo Pet com base nos dados fornecidos.
    - Parâmetros:
      - `pet`: Dados do novo Pet a serem criados.
    - Respostas:
      - `201 Created`: Retorna o Pet criado com sucesso.
+     - `422 Unprocessable Entity`: Em caso de dados inválidos ou faltando.
+     - `400 Bad Request`: Em caso de erro ao Adicionar o Pet.
      - `500 Internal Server Error`: Em caso de erro no servidor.
 
 6. **Atualização de um Pet Existente**:
-   - Endpoint: `PUT /api/pet`
+   - Endpoint: `PUT /api/v1/pets`
    - Descrição: Atualiza os dados de um Pet existente com base nos dados fornecidos.
    - Parâmetros:
      - `pet`: Dados atualizados do Pet.
    - Respostas:
      - `200 OK`: Retorna o Pet atualizado com sucesso.
-     - `204 No Content`: Se o Pet não for encontrado.
+     - `422 Unprocessable Entity`: Em caso de dados inválidos ou faltando.
+     - `400 Bad Request`: Em caso de erro ao Atualizar o Pet.
      - `500 Internal Server Error`: Em caso de erro no servidor.
 
 7. **Atualização do Status de um Pet Existente**:
-   - Endpoint: `PATCH /api/pet/status`
+   - Endpoint: `PATCH /api/v1/pets/{petId}/status`
    - Descrição: Atualiza o status de um Pet existente com base no ID fornecido.
    - Parâmetros:
      - `petId`: ID do Pet a ser atualizado.
      - `status`: Novo status do Pet.
    - Respostas:
      - `200 OK`: Retorna o status do Pet atualizado com sucesso.
-     - `204 No Content`: Se o Pet não for encontrado.
+     - `422 Unprocessable Entity`: Em caso de dados inválidos ou faltando.
+     - `400 Bad Request`: Em caso de erro ao Atualizar o Status de um Pet.
      - `500 Internal Server Error`: Em caso de erro no servidor.
 
 8. **Exclusão de um Pet Existente**:
-   - Endpoint: `DELETE /api/pet`
+   - Endpoint: `DELETE /api/v1/pets/{petId}`
    - Descrição: Exclui um Pet específico com base no ID fornecido.
    - Parâmetros:
      - `petId`: ID do Pet a ser excluído.
    - Respostas:
      - `200 OK`: Retorna `true` se o Pet foi excluído com sucesso.
-     - `204 No Content`: Se o Pet não for encontrado.
+     - `422 Unprocessable Entity`: Em caso de dados inválidos ou faltando.
+     - `400 Bad Request`: Em caso de erro ao Deletar o Pet.
      - `500 Internal Server Error`: Em caso de erro no servidor.
 
 </details>
@@ -202,7 +208,7 @@ A controller `PetsController` oferece as seguintes funcionalidades para lidar co
      ```
 
 5. **Execute a migração para criar as tabelas no banco de dados**:
-   - Abra o NuGet Package Manager Console e execute o seguinte comando para aplicar as migrações e criar as tabelas no banco de dados:
+   - Abra o NuGet Package Manager Console no Diretório da projeto 'Caramel.Pattern.Services.Infra' e execute o seguinte comando para aplicar as migrações e criar as tabelas no banco de dados:
      ```
      update-database
      ```
