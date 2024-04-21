@@ -11,6 +11,8 @@ namespace Caramel.Pattern.Services.Domain.Enums
         [Description("Erro ao Processar")]
         Failure = 2,
         [Description("Erro no Banco de dados")]
-        DbFailure = 3
+        DbFailure = 3,
+        [Description("Não Encontrado")]
+        NoContent = 3
     }
 }

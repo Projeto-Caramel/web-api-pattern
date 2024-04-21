@@ -1,8 +1,13 @@
-using Caramel.Pattern.Services.Api.Example.Models.Responses;
+using AutoMapper;
 using Caramel.Pattern.Services.Domain.Entities;
+using Caramel.Pattern.Services.Domain.Entities.Models.Request;
+using Caramel.Pattern.Services.Domain.Entities.Models.Responses;
 using Caramel.Pattern.Services.Domain.Enums;
+using Caramel.Pattern.Services.Domain.Exceptions;
 using Caramel.Pattern.Services.Domain.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Net;
 
 namespace Caramel.Pattern.Services.Api.Example.Controllers.v1
 {
@@ -12,33 +17,35 @@ namespace Caramel.Pattern.Services.Api.Example.Controllers.v1
     {
         private readonly ILogger<PartnersController> _logger;
         private readonly IPartnerService _service;
+        private readonly IMapper _mapper;
 
         public PartnersController(
             ILogger<PartnersController> logger,
-            IPartnerService service)
+            IPartnerService service,
+            IMapper mapper)
         {
             _logger = logger;
             _service = service;
+            _mapper = mapper;
         }
 
         /// <summary>
         /// Recupera uma lista de todos os Parceiros.
         /// </summary>
-        /// <param name="page">Página. Se for igual a 0, por padrão será considerada a primeira página.</param>
-        /// <param name="pageSize">Quantidade de Pets da Página. Se for igual a 0, por padrão será considerada os 10 primeiros Parceiros.</param>
+        /// <param name="pagination">Página e Total de dados a serem trazidos. Default: Page = 1 e Size = 10</param>
         /// <returns>Lista de Parceiros, Status do Processo e Descrição</returns>
-        [HttpGet("/api/partners")]
+        [HttpGet("/api/v1/partners")]
         [ProducesResponseType(typeof(CustomResponse<IEnumerable<Partner>>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetPartners(int page, int pageSize)
+        [ProducesResponseType(typeof(ExceptionResponse), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetPartners(Pagination pagination)
         {
             var partners = await _service.FetchAsync();
+            
+            var paginatedPartners = ReturnPaginated(partners, pagination);
 
-            var paginatedPartners = ReturnPaginated<Partner>(partners, page, pageSize);
+            var response = new CustomResponse<IEnumerable<Partner>>(paginatedPartners, StatusProcess.Success); 
 
-            var response = new CustomResponse<IEnumerable<Partner>>(paginatedPartners, StatusProcess.Success);
-
-            return StatusCode(200, response);
+            return Ok(response);
         }
 
         /// <summary>
@@ -46,16 +53,17 @@ namespace Caramel.Pattern.Services.Api.Example.Controllers.v1
         /// </summary>
         /// <param name="partnerId">O ID do parceiro a ser recuperado.</param>
         /// <returns>Parceiro, Status do Processo e Descrição</returns>
-        [HttpGet("/api/partner/{partnerId}")]
+        [HttpGet("/api/v1/partners/{partnerId}")]
         [ProducesResponseType(typeof(CustomResponse<Partner>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(typeof(ExceptionResponse), StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(typeof(ExceptionResponse), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetPartner(int partnerId)
         {
             var partner = await _service.GetSingleAsync(partnerId);
 
             var response = new CustomResponse<Partner>(partner, StatusProcess.Success);
 
-            return StatusCode(200, response);
+            return Ok(response);
         }
 
         /// <summary>
@@ -63,36 +71,45 @@ namespace Caramel.Pattern.Services.Api.Example.Controllers.v1
         /// </summary>
         /// <param name="partner">Dados do novo Parceiro.</param>
         /// <returns>Parceiro Criado, Status do Processo e Descrição</returns>
-        [HttpPost("/api/partner")]
+        [HttpPost("/api/v1/partners")]
         [ProducesResponseType(typeof(CustomResponse<Partner>), StatusCodes.Status201Created)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> PostPartner(Partner partner)
+        [ProducesResponseType(typeof(ExceptionResponse), StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(typeof(ExceptionResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ExceptionResponse), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> PostPartner(PartnerRequest partnerRequest)
         {
+            var partner = _mapper.Map<Partner>(partnerRequest);
+
             var addedPartner = await _service.AddAsync(partner);
 
             var response = new CustomResponse<Partner>(addedPartner, StatusProcess.Success);
 
-            return StatusCode(201, response);
+            var uri = Url.Action("GetPartner", "PartnerController", new { id = addedPartner.Id });
+
+            return Created(uri, response);
         }
 
         /// <summary>
         /// Atualiza um parceiro existente.
         /// </summary>
-        /// <param name="partner">Dados Atualizados do Parceiro.</param>
+        /// <param name="partnerId">O ID do parceiro a ser Atualizado.</param>
+        /// <param name="partnerRequest">Dados Atualizados do Parceiro.</param>
         /// <returns>Parceiro Atualizado, Status do Processo e Descrição</returns>
-        [HttpPut("/api/partner")]
+        [HttpPut("/api/v1/partners")]
         [ProducesResponseType(typeof(CustomResponse<Partner>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status204NoContent)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
-        public IActionResult PutPartner(Partner partner)
+        [ProducesResponseType(typeof(ExceptionResponse), StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(typeof(ExceptionResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ExceptionResponse), StatusCodes.Status500InternalServerError)]
+        public IActionResult PutPartner(int partnerId, Partner partnerRequest)
         {
+            var partner = _mapper.Map<Partner>(partnerRequest);
+            partner.Id = partnerId;
+
             var updatedPartner = _service.Update(partner);
 
             var response = new CustomResponse<Partner>(updatedPartner, StatusProcess.Success);
 
-            return StatusCode(200, response);
+            return Ok(response);
         }
 
         /// <summary>
@@ -100,18 +117,16 @@ namespace Caramel.Pattern.Services.Api.Example.Controllers.v1
         /// </summary>
         /// <param name="partnerId">O ID do parceiro a ser excluído.</param>
         /// <returns>Parceiro Deletado, Status do Processo e Descrição</returns>
-        [HttpDelete("/api/partner")]
-        [ProducesResponseType(typeof(CustomResponse<Partner>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status204NoContent)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
+        [HttpDelete("/api/v1/partners/{partnerId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ExceptionResponse), StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(typeof(ExceptionResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ExceptionResponse), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> DeletePartner(int partnerId)
         {
-            var deletedPartner = await _service.DeleteAsync(partnerId);
+            await _service.DeleteAsync(partnerId);
 
-            var response = new CustomResponse<bool>(deletedPartner, StatusProcess.Success);
-
-            return StatusCode(201, response);
+            return NoContent();
         }
     }
 }

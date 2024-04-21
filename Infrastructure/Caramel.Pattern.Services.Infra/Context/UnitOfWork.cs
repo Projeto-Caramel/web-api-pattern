@@ -1,6 +1,5 @@
 ﻿using Caramel.Pattern.Services.Domain.Repositories;
 using Caramel.Pattern.Services.Domain.Repositories.UnitOfWork;
-using Microsoft.EntityFrameworkCore;
 
 namespace Caramel.Pattern.Services.Infra.Context
 {

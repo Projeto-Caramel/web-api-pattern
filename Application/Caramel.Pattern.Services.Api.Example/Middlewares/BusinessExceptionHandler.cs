@@ -1,8 +1,7 @@
-﻿using Caramel.Pattern.Services.Api.Example.Extensions;
-using Caramel.Pattern.Services.Domain.Enums;
+﻿using Caramel.Pattern.Services.Domain.Entities.Models.Responses;
 using Caramel.Pattern.Services.Domain.Exceptions;
+using Caramel.Pattern.Services.Domain.Extensions;
 using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Caramel.Pattern.Services.Api.Example.Middlewares
 {
@@ -22,18 +21,13 @@ namespace Caramel.Pattern.Services.Api.Example.Middlewares
 
             _logger.LogWarning(exception, businessException.Status.GetDescription(), exception.Message);
 
-            var problemDetails = new ProblemDetails
-            {
-                Status = (int)businessException.Status,
-                Extensions = new Dictionary<string, object?>()
-                {
-                    { "Description",  businessException.Status.GetDescription() },
-                    { "ErrorDetails",  businessException.ErrorDetails }
-                }                
-            };
+            var response = new ExceptionResponse(
+                businessException.Status,
+                businessException.ErrorDetails
+            );
 
             httpContext.Response.StatusCode = (int)businessException.StatusCode;
-            await httpContext.Response.WriteAsJsonAsync(problemDetails);
+            await httpContext.Response.WriteAsJsonAsync(response);
 
             return true;
         }

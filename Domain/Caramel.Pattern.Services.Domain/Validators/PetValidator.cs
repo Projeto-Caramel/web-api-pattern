@@ -1,7 +1,7 @@
 ﻿using Caramel.Pattern.Services.Domain.Entities;
 using FluentValidation;
 
-namespace Caramel.Pattern.Services.Domain.Validations
+namespace Caramel.Pattern.Services.Domain.Validators
 {
     public class PetValidator : AbstractValidator<Pet>
     {

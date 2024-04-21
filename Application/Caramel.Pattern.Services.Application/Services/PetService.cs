@@ -3,7 +3,7 @@ using Caramel.Pattern.Services.Domain.Enums;
 using Caramel.Pattern.Services.Domain.Exceptions;
 using Caramel.Pattern.Services.Domain.Repositories.UnitOfWork;
 using Caramel.Pattern.Services.Domain.Services;
-using Caramel.Pattern.Services.Domain.Validations;
+using Caramel.Pattern.Services.Domain.Validators;
 using FluentValidation;
 using FluentValidation.Results;
 using System;
@@ -23,12 +23,9 @@ namespace Caramel.Pattern.Services.Application.Services
         public async Task<Pet> GetSingleAsync(int id)
         {
             if (id <= 0)
-                throw new BusinessException("O campo ID é obrigatório.", StatusProcess.InvalidRequest, HttpStatusCode.BadRequest);
+                throw new BusinessException("O campo ID é obrigatório.", StatusProcess.InvalidRequest, HttpStatusCode.UnprocessableEntity);
 
             var pet = await _unitOfWork.Pets.GetSingleAsync(id);
-
-            if (pet == null)
-                throw new BusinessException("Não foi possível encontrar nenhum Pet com essas informações.", StatusProcess.Failure, HttpStatusCode.NoContent);
 
             return pet;
         }
@@ -36,12 +33,12 @@ namespace Caramel.Pattern.Services.Application.Services
         public async Task<PetStatus> GetPetStatusAsync(int id)
         {
             if (id <= 0)
-                throw new BusinessException("O campo ID é obrigatório.", StatusProcess.InvalidRequest, HttpStatusCode.BadRequest);
+                throw new BusinessException("O campo ID é obrigatório.", StatusProcess.InvalidRequest, HttpStatusCode.UnprocessableEntity);
 
             var pet = await _unitOfWork.Pets.GetSingleAsync(id);
 
             if (pet == null)
-                throw new BusinessException("Não foi possível encontrar nenhum Pet com essas informações.", StatusProcess.Failure, HttpStatusCode.NoContent);
+                throw new BusinessException("Não foi possível encontrar nenhum Pet com essas informações.", StatusProcess.Failure, HttpStatusCode.BadRequest);
 
             return pet.Status;
         }
@@ -49,26 +46,20 @@ namespace Caramel.Pattern.Services.Application.Services
         public async Task<IEnumerable<Pet>> FetchAsync(int partnerId)
         {
             if (partnerId <= 0)
-                throw new BusinessException("O campo Partner ID é obrigatório.", StatusProcess.InvalidRequest, HttpStatusCode.BadRequest);
+                throw new BusinessException("O campo Partner ID é obrigatório.", StatusProcess.InvalidRequest, HttpStatusCode.UnprocessableEntity);
 
             var pets = await _unitOfWork.Pets.FetchAsync(x => x.PartnerId == partnerId);
-
-            if (!pets.Any())
-                throw new BusinessException("Não foi possível encontrar nenhum Pet com essas informações.", StatusProcess.Failure, HttpStatusCode.NoContent);
-            
+                        
             return pets;
         }
 
         public async Task<IEnumerable<Pet>> FetchByFilterAsync(int partnerId, PetFilter filter)
         {
-            BusinessException.ThrowIfNul(filter, "Pet Filter");
+            BusinessException.ThrowIfNull(filter, "Pet Filter");
 
             var pets = await _unitOfWork.Pets.FetchAsync(x => x.PartnerId == partnerId);
             var petsFiltered = FilterPets(pets, filter);
-
-            if (!petsFiltered.Any())
-                throw new BusinessException("Não foi possível encontrar nenhum Pet com essas informações.", StatusProcess.Failure, HttpStatusCode.NoContent);
-            
+                        
             return petsFiltered;
         }
 
@@ -103,12 +94,12 @@ namespace Caramel.Pattern.Services.Application.Services
         public async Task<PetStatus> UpdateStatusAsync(int id, PetStatus status)
         {
             if (id <= 0)
-                throw new BusinessException("O campo ID é obrigatório.", StatusProcess.InvalidRequest, HttpStatusCode.BadRequest);
+                throw new BusinessException("O campo ID é obrigatório.", StatusProcess.InvalidRequest, HttpStatusCode.UnprocessableEntity);
 
             var entity = await GetSingleAsync(id);
 
             if (entity == null)
-                throw new BusinessException("Não foi possível encontrar nenhum Pet com essas informações.", StatusProcess.Failure, HttpStatusCode.NoContent);
+                throw new BusinessException("Não foi possível encontrar nenhum Pet com essas informações.", StatusProcess.Failure, HttpStatusCode.UnprocessableEntity);
 
             entity.Status = status;
 
@@ -122,12 +113,12 @@ namespace Caramel.Pattern.Services.Application.Services
         public async Task<bool> DeleteAsync(int id)
         {
             if (id <= 0)
-                throw new BusinessException("O campo ID é obrigatório.", StatusProcess.InvalidRequest, HttpStatusCode.BadRequest);
+                throw new BusinessException("O campo ID é obrigatório.", StatusProcess.InvalidRequest, HttpStatusCode.UnprocessableEntity);
 
             var entity = await GetSingleAsync(id);
 
             if (entity == null)
-                throw new BusinessException("Não foi possível encontrar nenhum Pet com essas informações.", StatusProcess.Failure, HttpStatusCode.NoContent);
+                throw new BusinessException("Não foi possível encontrar nenhum Pet com essas informações.", StatusProcess.Failure, HttpStatusCode.UnprocessableEntity);
 
             await _unitOfWork.Pets.AddAsync(entity);
 

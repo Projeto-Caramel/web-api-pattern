@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Reflection;
 
-namespace Caramel.Pattern.Services.Api.Example.Extensions
+namespace Caramel.Pattern.Services.Domain.Extensions
 {
     public static class EnumExtensions
     {

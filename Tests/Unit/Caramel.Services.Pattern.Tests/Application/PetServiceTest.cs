@@ -28,8 +28,7 @@ namespace Caramel.Services.Pattern.Tests.Application
         }
 
         [Theory]
-        [InlineData(0, "O campo ID é obrigatório.", StatusProcess.InvalidRequest, HttpStatusCode.BadRequest)]
-        [InlineData(3, "Não foi possível encontrar nenhum Pet com essas informações.", StatusProcess.Failure, HttpStatusCode.NoContent)]
+        [InlineData(0, "O campo ID é obrigatório.", StatusProcess.InvalidRequest, HttpStatusCode.UnprocessableEntity)]
         public async Task GetSingleAsync_BusinessExceptions(int id, string message, StatusProcess process, HttpStatusCode statusCode)
         {
             var mock = new Mock<IUnitOfWork>();
@@ -60,8 +59,8 @@ namespace Caramel.Services.Pattern.Tests.Application
         }
 
         [Theory]
-        [InlineData(0, "O campo ID é obrigatório.", StatusProcess.InvalidRequest, HttpStatusCode.BadRequest)]
-        [InlineData(3, "Não foi possível encontrar nenhum Pet com essas informações.", StatusProcess.Failure, HttpStatusCode.NoContent)]
+        [InlineData(0, "O campo ID é obrigatório.", StatusProcess.InvalidRequest, HttpStatusCode.UnprocessableEntity)]
+        [InlineData(3, "Não foi possível encontrar nenhum Pet com essas informações.", StatusProcess.Failure, HttpStatusCode.BadRequest)]
         public async Task GetPetStatusAsync_BusinessExceptions(int id, string message, StatusProcess process, HttpStatusCode statusCode)
         {
             var mock = new Mock<IUnitOfWork>();
@@ -92,8 +91,7 @@ namespace Caramel.Services.Pattern.Tests.Application
         }
 
         [Theory]
-        [InlineData(0, "O campo Partner ID é obrigatório.", StatusProcess.InvalidRequest, HttpStatusCode.BadRequest)]
-        [InlineData(3, "Não foi possível encontrar nenhum Pet com essas informações.", StatusProcess.Failure, HttpStatusCode.NoContent)]
+        [InlineData(0, "O campo Partner ID é obrigatório.", StatusProcess.InvalidRequest, HttpStatusCode.UnprocessableEntity)]
         public async Task FetchAsync_BusinessExceptions(int id, string message, StatusProcess process, HttpStatusCode statusCode)
         {
             var mock = new Mock<IUnitOfWork>();
@@ -129,8 +127,7 @@ namespace Caramel.Services.Pattern.Tests.Application
         }
 
         [Theory]
-        [InlineData(0, "Null", "O parâmetro Pet Filter não pode ser nulo.", StatusProcess.InvalidRequest, HttpStatusCode.BadRequest)]
-        [InlineData(1, "NotFound", "Não foi possível encontrar nenhum Pet com essas informações.", StatusProcess.Failure, HttpStatusCode.NoContent)]
+        [InlineData(0, "Null", "O parâmetro Pet Filter não pode ser nulo.", StatusProcess.InvalidRequest, HttpStatusCode.UnprocessableEntity)]
         public async Task FetchByFilterAsync_BusinessExceptions(int id, string key, string message, StatusProcess process, HttpStatusCode statusCode)
         {
             var mock = new Mock<IUnitOfWork>();
@@ -162,7 +159,7 @@ namespace Caramel.Services.Pattern.Tests.Application
         }
 
         [Theory]
-        [InlineData("Null", "O parâmetro Pet não pode ser nulo.", StatusProcess.InvalidRequest, HttpStatusCode.BadRequest)]
+        [InlineData("Null", "O parâmetro Pet não pode ser nulo.", StatusProcess.InvalidRequest, HttpStatusCode.UnprocessableEntity)]
         [InlineData("Basic", "Não foi possível Adicionar o Pet.", StatusProcess.Failure, HttpStatusCode.BadRequest)]
         public async Task AddAsync_BusinessExceptions(string key, string message, StatusProcess process, HttpStatusCode statusCode)
         {
@@ -194,7 +191,7 @@ namespace Caramel.Services.Pattern.Tests.Application
 
             Assert.IsType<string[]>(exception.ErrorDetails);
             Assert.Equal(StatusProcess.InvalidRequest, exception.Status);
-            Assert.Equal(HttpStatusCode.BadRequest, exception.StatusCode);
+            Assert.Equal(HttpStatusCode.UnprocessableEntity, exception.StatusCode);
         }
 
         [Fact]
@@ -213,7 +210,7 @@ namespace Caramel.Services.Pattern.Tests.Application
         }
 
         [Theory]
-        [InlineData("Null", "O parâmetro Pet não pode ser nulo.", StatusProcess.InvalidRequest, HttpStatusCode.BadRequest)]
+        [InlineData("Null", "O parâmetro Pet não pode ser nulo.", StatusProcess.InvalidRequest, HttpStatusCode.UnprocessableEntity)]
         [InlineData("BasicUpdateException", "Não foi possível Alterar o Pet.", StatusProcess.Failure, HttpStatusCode.BadRequest)]
         public void Update_BusinessExceptions(string key, string message, StatusProcess process, HttpStatusCode statusCode)
         {
@@ -245,7 +242,7 @@ namespace Caramel.Services.Pattern.Tests.Application
 
             Assert.IsType<string[]>(exception.ErrorDetails);
             Assert.Equal(StatusProcess.InvalidRequest, exception.Status);
-            Assert.Equal(HttpStatusCode.BadRequest, exception.StatusCode);
+            Assert.Equal(HttpStatusCode.UnprocessableEntity, exception.StatusCode);
         }
 
         [Fact]
@@ -264,8 +261,8 @@ namespace Caramel.Services.Pattern.Tests.Application
         }
 
         [Theory]
-        [InlineData(0, "O campo ID é obrigatório.", StatusProcess.InvalidRequest, HttpStatusCode.BadRequest)]
-        [InlineData(3, "Não foi possível encontrar nenhum Pet com essas informações.", StatusProcess.Failure, HttpStatusCode.NoContent)]
+        [InlineData(0, "O campo ID é obrigatório.", StatusProcess.InvalidRequest, HttpStatusCode.UnprocessableEntity)]
+        [InlineData(3, "Não foi possível encontrar nenhum Pet com essas informações.", StatusProcess.Failure, HttpStatusCode.UnprocessableEntity)]
         [InlineData(4, "Não foi possível Alterar o Status do Pet.", StatusProcess.Failure, HttpStatusCode.BadRequest)]
         public async Task UpdateStatusAsync_BusinessExceptions(int id, string message, StatusProcess process, HttpStatusCode statusCode)
         {
@@ -302,8 +299,8 @@ namespace Caramel.Services.Pattern.Tests.Application
         }
 
         [Theory]
-        [InlineData(0, "O campo ID é obrigatório.", StatusProcess.InvalidRequest, HttpStatusCode.BadRequest)]
-        [InlineData(3, "Não foi possível encontrar nenhum Pet com essas informações.", StatusProcess.Failure, HttpStatusCode.NoContent)]
+        [InlineData(0, "O campo ID é obrigatório.", StatusProcess.InvalidRequest, HttpStatusCode.UnprocessableEntity)]
+        [InlineData(3, "Não foi possível encontrar nenhum Pet com essas informações.", StatusProcess.Failure, HttpStatusCode.UnprocessableEntity)]
         [InlineData(1, "Não foi possível Deletar o Pet.", StatusProcess.Failure, HttpStatusCode.BadRequest)]
         public async Task DeleteAsync_BusinessExceptions(int id, string message, StatusProcess process, HttpStatusCode statusCode)
         {

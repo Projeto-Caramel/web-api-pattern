@@ -1,4 +1,5 @@
 ﻿using Caramel.Pattern.Services.Domain.Enums;
+using System.Diagnostics.Tracing;
 using System.Net;
 
 namespace Caramel.Pattern.Services.Domain.Exceptions
@@ -16,14 +17,15 @@ namespace Caramel.Pattern.Services.Domain.Exceptions
             ErrorDetails = details;
         }
 
-        public static void ThrowIfNul(object argument, string argumentName)
+        public static void ThrowIfNull(object argument, string argumentName)
         {
             if (argument == null)
                 throw new BusinessException(
                     $"O parâmetro {argumentName} não pode ser nulo.",
                     StatusProcess.InvalidRequest,
-                    HttpStatusCode.BadRequest
+                    HttpStatusCode.UnprocessableEntity
                 );
         }
     }
 }
+

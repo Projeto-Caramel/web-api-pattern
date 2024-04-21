@@ -18,7 +18,7 @@ namespace Caramel.Pattern.Services.Application.Services
         protected void ValidateEntity<T, TEntity>(TEntity entity, string entityName)
             where T : AbstractValidator<TEntity>, new()
         {
-            BusinessException.ThrowIfNul(entity, entityName);
+            BusinessException.ThrowIfNull(entity, entityName);
 
             var validatorInstance = new T();
             var result = validatorInstance.Validate(entity);
@@ -27,7 +27,7 @@ namespace Caramel.Pattern.Services.Application.Services
                 throw new BusinessException(
                     result.Errors.Select(x => x.ErrorMessage).ToArray(),
                     StatusProcess.InvalidRequest,
-                    HttpStatusCode.BadRequest);
+                    HttpStatusCode.UnprocessableEntity);
         }
     }
 }

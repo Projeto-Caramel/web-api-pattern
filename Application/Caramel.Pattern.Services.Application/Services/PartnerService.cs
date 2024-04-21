@@ -3,7 +3,7 @@ using Caramel.Pattern.Services.Domain.Enums;
 using Caramel.Pattern.Services.Domain.Exceptions;
 using Caramel.Pattern.Services.Domain.Repositories.UnitOfWork;
 using Caramel.Pattern.Services.Domain.Services;
-using Caramel.Pattern.Services.Domain.Validations;
+using Caramel.Pattern.Services.Domain.Validators;
 using System.Net;
 
 namespace Caramel.Pattern.Services.Application.Services
@@ -20,12 +20,9 @@ namespace Caramel.Pattern.Services.Application.Services
         public async Task<Partner> GetSingleAsync(int id)
         {
             if (id <= 0)
-                throw new BusinessException("O campo ID é obrigatório.", StatusProcess.InvalidRequest, HttpStatusCode.BadRequest);
+                throw new BusinessException("O campo ID é obrigatório.", StatusProcess.InvalidRequest, HttpStatusCode.UnprocessableEntity);
 
             var pet = await _unitOfWork.Partners.GetSingleAsync(id);
-
-            if (pet == null)
-                throw new BusinessException("Não foi possível encontrar nenhum Parceiro com essas informações.", StatusProcess.Failure, HttpStatusCode.NoContent);
 
             return pet;
         }
@@ -33,9 +30,6 @@ namespace Caramel.Pattern.Services.Application.Services
         public async Task<IEnumerable<Partner>> FetchAsync()
         {
             var pets = await _unitOfWork.Partners.FetchAsync();
-
-            if (!pets.Any())
-                throw new BusinessException("Não foi possível encontrar nenhum Parceiro com essas informações.", StatusProcess.Failure, HttpStatusCode.NoContent);
 
             return pets;
         }
@@ -71,12 +65,12 @@ namespace Caramel.Pattern.Services.Application.Services
         public async Task<bool> DeleteAsync(int id)
         {
             if (id <= 0)
-                throw new BusinessException("O campo ID é obrigatório.", StatusProcess.InvalidRequest, HttpStatusCode.BadRequest);
+                throw new BusinessException("O campo ID é obrigatório.", StatusProcess.InvalidRequest, HttpStatusCode.UnprocessableEntity);
 
             var entity = await GetSingleAsync(id);
 
             if (entity == null)
-                throw new BusinessException("Não foi possível encontrar nenhum Parceiro com essas informações.", StatusProcess.Failure, HttpStatusCode.NoContent);
+                throw new BusinessException("Não foi possível encontrar nenhum Parceiro com essas informações.", StatusProcess.Failure, HttpStatusCode.UnprocessableEntity);
 
             _unitOfWork.Partners.Delete(entity);
 

@@ -1,7 +1,7 @@
-﻿using Caramel.Pattern.Services.Api.Example.Extensions;
-using Caramel.Pattern.Services.Domain.Enums;
+﻿using Caramel.Pattern.Services.Domain.Enums;
+using Caramel.Pattern.Services.Domain.Extensions;
 
-namespace Caramel.Pattern.Services.Api.Example.Models.Responses
+namespace Caramel.Pattern.Services.Domain.Entities.Models.Responses
 {
     public class CustomResponse<T>
     {
@@ -12,7 +12,7 @@ namespace Caramel.Pattern.Services.Api.Example.Models.Responses
             Data = data;
         }
 
-        public T Data { get; set; } 
+        public T Data { get; set; }
         public StatusProcess status { get; set; }
         public string Description { get; set; }
     }

@@ -1,8 +1,7 @@
-﻿using Caramel.Pattern.Services.Api.Example.Extensions;
+﻿using Caramel.Pattern.Services.Domain.Entities.Models.Responses;
 using Caramel.Pattern.Services.Domain.Enums;
-using Caramel.Pattern.Services.Domain.Exceptions;
+using Caramel.Pattern.Services.Domain.Extensions;
 using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
 using System.Data.Common;
 
 namespace Caramel.Pattern.Services.Api.Example.Middlewares
@@ -23,18 +22,13 @@ namespace Caramel.Pattern.Services.Api.Example.Middlewares
 
             _logger.LogWarning(exception, StatusProcess.DbFailure.GetDescription(), exception.Message);
 
-            var problemDetails = new ProblemDetails
-            {
-                Status = (int)StatusProcess.DbFailure,
-                Extensions = new Dictionary<string, object?>()
-                {
-                    { "Description",  StatusProcess.DbFailure.GetDescription() },
-                    { "ErrorDetails",  dbException.Message }
-                }                
-            };
+            var response = new ExceptionResponse(
+                StatusProcess.Failure,
+                $"{dbException} - {dbException.InnerException}"
+            );
 
-            httpContext.Response.StatusCode = (int)StatusCodes.Status500InternalServerError;
-            await httpContext.Response.WriteAsJsonAsync(problemDetails);
+            httpContext.Response.StatusCode = (int)StatusCodes.Status400BadRequest;
+            await httpContext.Response.WriteAsJsonAsync(response);
 
             return true;
         }

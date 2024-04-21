@@ -8,6 +8,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Http.Json;
 using System.Text.Json.Serialization;
 using System.Text.Encodings.Web;
+using Caramel.Pattern.Services.Domain.AutoMapper;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -47,9 +48,13 @@ builder.Services.ConfigureHttpJsonOptions(options =>
     options.SerializerOptions.Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
 });
 
+// AutoMapper
+builder.Services.AddAutoMapper(typeof(MappingProfile));
+
 // Layer's Dependency
 builder.Services.AddDatabaseModule(builder.Configuration);
 builder.Services.AddApplicationModule();
+
 
 var app = builder.Build();
 
