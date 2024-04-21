@@ -51,18 +51,17 @@ namespace Caramel.Pattern.Services.Api.Example.Controllers.v1
         /// Recupera uma lista de pets filtrada por critérios específicos para um parceiro.
         /// </summary>
         /// <param name="partnerId">O ID do parceiro.</param>
-        /// <param name="pagination">Página e Total de dados a serem trazidos. Default: Page = 1 e Size = 10</param>
-        /// <param name="filter">O filtro a ser aplicado (objeto PetFilter).</param>
+        /// <param name="request">Página e Total de dados a serem trazidos e Filtro a ser realizado. Default: Page = 1 e Size = 10</param>
         /// <returns>Lista de Pets Filtrados, Status do Processo e Descrição.</returns>
         [HttpGet("/api/v1/pets/filtered")]
         [ProducesResponseType(typeof(CustomResponse<Pet>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ExceptionResponse), StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(typeof(ExceptionResponse), StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetPetsFiltered(int partnerId, Pagination pagination, PetFilter filter)
+        public async Task<IActionResult> GetPetsFiltered(int partnerId, GetPetsFilteredRequest request)
         {
-            var pets = await _service.FetchByFilterAsync(partnerId, filter);
+            var pets = await _service.FetchByFilterAsync(partnerId, request.PetFilter);
 
-            var paginetedPets = ReturnPaginated<Pet>(pets, pagination);
+            var paginetedPets = ReturnPaginated<Pet>(pets, request.Pagination);
 
             var response = new CustomResponse<IEnumerable<Pet>>(paginetedPets, StatusProcess.Success);
 
