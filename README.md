@@ -17,6 +17,7 @@
 - [Fluent Validators](Documentation/FluentValidator.md)
 - [API Documentation - Swashbuckle](Documentation/Swashbuckle.md)
 - [REST API](Documentation/RepositoryPattern.md)
+- [AutoMapper](Documentation/AutoMapper.md)
 
 ## ⚙️ Testes
 - [Unit Tests with XUnit](Documentation/UnitTests.md)
