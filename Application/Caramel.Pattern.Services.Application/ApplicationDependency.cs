@@ -10,6 +10,7 @@ namespace Caramel.Pattern.Services.Application
         {
             services.AddScoped<IPartnerService, PartnerService>();
             services.AddScoped<IPetService, PetService>();
+            services.AddScoped<IUserService, UserService>();
 
             return services;
         }

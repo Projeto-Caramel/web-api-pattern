@@ -29,18 +29,27 @@ namespace Caramel.Pattern.Services.Api.Example.Controllers.v1
         /// <summary>
         /// Recupera uma lista de todos os Parceiros.
         /// </summary>
-        /// <param name="pagination">Página e Total de dados a serem trazidos. Default: Page = 1 e Size = 10</param>
+        /// <param name="page">Página de dados a serem trazidos. Default: Page = 1.</param>
+        /// <param name="size">Tamanho da página de dados a serem trazidos. Default: Size = 10.</param>
         /// <returns>Lista de Parceiros, Status do Processo e Descrição</returns>
         [HttpGet("/api/v1/partners")]
         [ProducesResponseType(typeof(CustomResponse<IEnumerable<Partner>>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ExceptionResponse), StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetPartners(Pagination pagination)
+        public async Task<IActionResult> GetPartners(int page, int size, [FromHeader]string token)
         {
+            Pagination pagination = new Pagination
+            {
+                Page = page,
+                Size = size
+            };
+
             var partners = await _service.FetchAsync();
-            
+
             var paginatedPartners = ReturnPaginated(partners, pagination);
 
-            var response = new CustomResponse<IEnumerable<Partner>>(paginatedPartners, StatusProcess.Success); 
+            var response = new CustomResponse<IEnumerable<Partner>>(paginatedPartners, StatusProcess.Success);
+
+
 
             return Ok(response);
         }
@@ -54,7 +63,7 @@ namespace Caramel.Pattern.Services.Api.Example.Controllers.v1
         [ProducesResponseType(typeof(CustomResponse<Partner>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ExceptionResponse), StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(typeof(ExceptionResponse), StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetPartner(int partnerId)
+        public async Task<IActionResult> GetPartner(int partnerId, [FromHeader]string token)
         {
             var partner = await _service.GetSingleAsync(partnerId);
 
@@ -73,7 +82,7 @@ namespace Caramel.Pattern.Services.Api.Example.Controllers.v1
         [ProducesResponseType(typeof(ExceptionResponse), StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(typeof(ExceptionResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ExceptionResponse), StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> PostPartner(PartnerRequest partnerRequest)
+        public async Task<IActionResult> PostPartner(PartnerRequest partnerRequest, [FromHeader] string token)
         {
             var partner = _mapper.Map<Partner>(partnerRequest);
 
@@ -119,7 +128,7 @@ namespace Caramel.Pattern.Services.Api.Example.Controllers.v1
         [ProducesResponseType(typeof(ExceptionResponse), StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(typeof(ExceptionResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ExceptionResponse), StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> DeletePartner(int partnerId)
+        public async Task<IActionResult> DeletePartner(int partnerId, [FromHeader] string token)
         {
             await _service.DeleteAsync(partnerId);
 

@@ -4,6 +4,7 @@
     {
         IPetRepository Pets { get; }
         IPartnerRepository Partners { get; }
+        IUserRepository Users { get; }
         int Save();
     }
 }

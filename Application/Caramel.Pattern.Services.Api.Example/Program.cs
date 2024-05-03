@@ -78,4 +78,7 @@ app.UseSwaggerUI(c =>
     c.RoutePrefix = "swagger";
 });
 
+// MiddleWareJWT
+app.UseMiddleware<JwtMiddleware>();
+
 app.Run();

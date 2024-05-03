@@ -36,7 +36,7 @@ namespace Caramel.Pattern.Services.Api.Example.Controllers.v1
         [ProducesResponseType(typeof(CustomResponse<Pet>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ExceptionResponse), StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(typeof(ExceptionResponse), StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetPets(int partnerId, Pagination pagination)
+        public async Task<IActionResult> GetPets(int partnerId, Pagination pagination, [FromHeader] string token)
         {
             var pets = await _service.FetchAsync(partnerId);
 
@@ -57,7 +57,7 @@ namespace Caramel.Pattern.Services.Api.Example.Controllers.v1
         [ProducesResponseType(typeof(CustomResponse<Pet>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ExceptionResponse), StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(typeof(ExceptionResponse), StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetPetsFiltered(int partnerId, GetPetsFilteredRequest request)
+        public async Task<IActionResult> GetPetsFiltered(int partnerId, GetPetsFilteredRequest request, [FromHeader] string token)
         {
             var pets = await _service.FetchByFilterAsync(partnerId, request.PetFilter);
 
@@ -77,7 +77,7 @@ namespace Caramel.Pattern.Services.Api.Example.Controllers.v1
         [ProducesResponseType(typeof(CustomResponse<Pet>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ExceptionResponse), StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(typeof(ExceptionResponse), StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetPet(int petId)
+        public async Task<IActionResult> GetPet(int petId, [FromHeader] string token)
         {
             var pet = await _service.GetSingleAsync(petId);
 
@@ -95,7 +95,7 @@ namespace Caramel.Pattern.Services.Api.Example.Controllers.v1
         [ProducesResponseType(typeof(CustomResponse<Pet>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ExceptionResponse), StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(typeof(ExceptionResponse), StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetPetStatus(int petId)
+        public async Task<IActionResult> GetPetStatus(int petId, [FromHeader] string token)
         {
             var petStatus = await _service.GetPetStatusAsync(petId);
 
@@ -114,7 +114,7 @@ namespace Caramel.Pattern.Services.Api.Example.Controllers.v1
         [ProducesResponseType(typeof(ExceptionResponse), StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ExceptionResponse), StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> PostPet(PetRequest petRequest)
+        public async Task<IActionResult> PostPet(PetRequest petRequest, [FromHeader] string token)
         {
             var pet = _mapper.Map<Pet>(petRequest);
 
@@ -138,7 +138,7 @@ namespace Caramel.Pattern.Services.Api.Example.Controllers.v1
         [ProducesResponseType(typeof(ExceptionResponse), StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ExceptionResponse), StatusCodes.Status500InternalServerError)]
-        public IActionResult PutPet(int petId, PetRequest petRequest)
+        public IActionResult PutPet(int petId, PetRequest petRequest, [FromHeader] string token)
         {
             var pet = _mapper.Map<Pet>(petRequest);
             pet.Id = petId;
@@ -161,7 +161,7 @@ namespace Caramel.Pattern.Services.Api.Example.Controllers.v1
         [ProducesResponseType(typeof(ExceptionResponse), StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ExceptionResponse), StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> PutPet(int petId, PetStatus status)
+        public async Task<IActionResult> PutPet(int petId, PetStatus status, [FromHeader] string token)
         {
             var updatedStatus = await _service.UpdateStatusAsync(petId, status);
 
@@ -180,7 +180,7 @@ namespace Caramel.Pattern.Services.Api.Example.Controllers.v1
         [ProducesResponseType(typeof(string), StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> DeletePet(int petId)
+        public async Task<IActionResult> DeletePet(int petId, [FromHeader] string token)
         {
             await _service.DeleteAsync(petId);
 
