@@ -1,7 +1,11 @@
 using Caramel.Pattern.Services.Domain.Entities;
 using Caramel.Pattern.Services.Domain.Entities.Models.Request;
 using Caramel.Pattern.Services.Domain.Entities.Models.Responses;
+using Caramel.Pattern.Services.Domain.Enums;
+using Caramel.Pattern.Services.Domain.Exceptions;
 using Microsoft.Extensions.Options;
+using System;
+using System.Net;
 using System.Net.Http.Json;
 using System.Net.Mime;
 using System.Text;
@@ -54,8 +58,14 @@ namespace Caramel.Services.Pattern.Tests
 
             HttpResponseMessage response = await _httpClient.PostAsJsonAsync($"api/v1/partners", partnerRequest, options);
 
+            var body = await response.Content.ReadAsStringAsync();
+
+            var customResponse = JsonSerializer.Deserialize< CustomResponse<Partner>>(body);
+
             Assert.True(response.IsSuccessStatusCode);
             // Validar StatusProcces
+            Assert.Equal(StatusProcess.Success, customResponse.Status);
+            Assert.Equal("Processado com Sucesso", customResponse.Description);
         }
 
         [Fact]
@@ -79,8 +89,14 @@ namespace Caramel.Services.Pattern.Tests
 
             HttpResponseMessage response = await _httpClient.PostAsJsonAsync($"api/v1/partners", partnerRequest, options);
 
+            var body = await response.Content.ReadAsStringAsync();
+
+            var exception = JsonSerializer.Deserialize<BusinessException>(body);
+
             Assert.True(response.IsSuccessStatusCode);
             // Validar BusinessException
+            Assert.Equal(StatusProcess.InvalidRequest, exception.Status);
+            Assert.Equal(HttpStatusCode.BadRequest, exception.StatusCode);
         }
     }
 }
