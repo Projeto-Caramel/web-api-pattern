@@ -30,6 +30,7 @@ namespace Caramel.Services.Pattern.Tests
             HttpResponseMessage response = await _httpClient.GetAsync($"api/v1/partners?page={pagination.Page}&size={pagination.Size}");
 
             Assert.True(response.IsSuccessStatusCode);
+            // Validar StatusProccess
         }
 
         [Fact]
@@ -51,14 +52,35 @@ namespace Caramel.Services.Pattern.Tests
                 Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
             };
 
-            var json = JsonSerializer.Serialize(partnerRequest, options);
-
-            // Faz a chamada Post para a API
-            HttpResponseMessage response = await _httpClient.PostAsJsonAsync($"api/v1/partners", json);
-
-            var teste = await response.Content.ReadAsStringAsync();
+            HttpResponseMessage response = await _httpClient.PostAsJsonAsync($"api/v1/partners", partnerRequest, options);
 
             Assert.True(response.IsSuccessStatusCode);
+            // Validar StatusProcces
+        }
+
+        [Fact]
+        public async Task PostPartner_ExceptionAsync()
+        {
+            var partnerRequest = new PartnerRequest
+            {
+                Name = "",
+                Description = "",
+                Email = "",
+                Phone = "",
+                Cnpj = "",
+                AdoptionRate = 0
+            };
+            var options = new JsonSerializerOptions()
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                WriteIndented = true,
+                Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+            };
+
+            HttpResponseMessage response = await _httpClient.PostAsJsonAsync($"api/v1/partners", partnerRequest, options);
+
+            Assert.True(response.IsSuccessStatusCode);
+            // Validar BusinessException
         }
     }
 }
