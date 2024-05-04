@@ -60,7 +60,7 @@ namespace Caramel.Services.Pattern.Tests
 
             var body = await response.Content.ReadAsStringAsync();
 
-            var customResponse = JsonSerializer.Deserialize< CustomResponse<Partner>>(body);
+            var customResponse = JsonSerializer.Deserialize<CustomResponse<Partner>>(body);
 
             Assert.True(response.IsSuccessStatusCode);
             // Validar StatusProcces
@@ -71,15 +71,8 @@ namespace Caramel.Services.Pattern.Tests
         [Fact]
         public async Task PostPartner_ExceptionAsync()
         {
-            var partnerRequest = new PartnerRequest
-            {
-                Name = "",
-                Description = "",
-                Email = "",
-                Phone = "",
-                Cnpj = "",
-                AdoptionRate = 0
-            };
+            var partnerRequest = new PartnerRequest();
+
             var options = new JsonSerializerOptions()
             {
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
@@ -93,10 +86,55 @@ namespace Caramel.Services.Pattern.Tests
 
             var exception = JsonSerializer.Deserialize<BusinessException>(body);
 
-            Assert.True(response.IsSuccessStatusCode);
+            Assert.False(response.IsSuccessStatusCode);
             // Validar BusinessException
             Assert.Equal(StatusProcess.InvalidRequest, exception.Status);
-            Assert.Equal(HttpStatusCode.BadRequest, exception.StatusCode);
+            Assert.Equal(HttpStatusCode.UnprocessableEntity, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task PutPartner_SuccessAsync()
+        {
+            var partnerRequest = new PartnerRequest
+            {            
+                Name = "TestePedroGay",
+                Description = "testeDesc",
+                Email = "testeEmail",
+                Phone = "testephone",
+                Cnpj = "testeCNPJ",
+                AdoptionRate = 2
+            };
+
+            var options = new JsonSerializerOptions()
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                WriteIndented = true,
+                Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+            };
+
+            int id = 4;
+
+            HttpResponseMessage response = await _httpClient.PutAsJsonAsync($"api/v1/partners?partnerId={id}", partnerRequest, options);
+
+            var body = await response.Content.ReadAsStringAsync();
+
+            var customResponse = JsonSerializer.Deserialize<CustomResponse<Partner>>(body);
+
+            Assert.True(response.IsSuccessStatusCode);
+            // Validar StatusProcces
+            Assert.Equal(StatusProcess.Success, customResponse.Status);
+            Assert.Equal("Processado com Sucesso", customResponse.Description);
+
+            HttpResponseMessage responseGet = await _httpClient.GetAsync($"api/v1/partners/{id}");
+
+            var bodyTest = await responseGet.Content.ReadAsStringAsync();
+
+            var customResponseGet = JsonSerializer.Deserialize<CustomResponse<Partner>>(bodyTest);
+            var partner = customResponseGet.Data;
+
+
+            Assert.True(responseGet.IsSuccessStatusCode);
+            Assert.Equal(partnerRequest.Name, partner.Name);
         }
     }
 }

@@ -1,14 +1,20 @@
 ﻿using Caramel.Pattern.Services.Domain.Enums;
 using System.Diagnostics.Tracing;
 using System.Net;
+using System.Text.Json.Serialization;
 
 namespace Caramel.Pattern.Services.Domain.Exceptions
 {
     public class BusinessException : Exception
     {
+        [JsonPropertyName("status")]
         public StatusProcess Status { get; set; }
+        [JsonPropertyName("statusCode")]
         public HttpStatusCode StatusCode { get; set; }
+        [JsonPropertyName("errorDetails")]
         public object ErrorDetails { get; set; }
+
+        public BusinessException() { }
 
         public BusinessException(object details, StatusProcess status, HttpStatusCode statusCode)
         {

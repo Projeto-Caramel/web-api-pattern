@@ -30,14 +30,17 @@ namespace Caramel.Pattern.Services.Api.Example.Controllers.v1
         /// Recupera uma lista de pets associados a um parceiro específico.
         /// </summary>
         /// <param name="partnerId">O ID do parceiro.</param>
-        /// <param name="pagination">Página e Total de dados a serem trazidos. Default: Page = 1 e Size = 10</param>
+        /// <param name="page">Página de dados a serem trazidos. Default: Page = 1.</param>
+        /// <param name="size">Tamanho da página de dados a serem trazidos. Default: Size = 10.</param>
         /// <returns>Lista de Pets, Status do Processo e Descrição</returns>
         [HttpGet("/api/v1/pets")]
         [ProducesResponseType(typeof(CustomResponse<Pet>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ExceptionResponse), StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(typeof(ExceptionResponse), StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetPets(int partnerId, Pagination pagination)
+        public async Task<IActionResult> GetPets(int partnerId, int page, int size)
         {
+            Pagination pagination = new Pagination(page, size);
+
             var pets = await _service.FetchAsync(partnerId);
 
             var paginetedPets = ReturnPaginated<Pet>(pets, pagination);
@@ -53,11 +56,11 @@ namespace Caramel.Pattern.Services.Api.Example.Controllers.v1
         /// <param name="partnerId">O ID do parceiro.</param>
         /// <param name="request">Página e Total de dados a serem trazidos e Filtro a ser realizado. Default: Page = 1 e Size = 10</param>
         /// <returns>Lista de Pets Filtrados, Status do Processo e Descrição.</returns>
-        [HttpGet("/api/v1/pets/filtered")]
+        [HttpPost("/api/v1/pets/filtered")]
         [ProducesResponseType(typeof(CustomResponse<Pet>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ExceptionResponse), StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(typeof(ExceptionResponse), StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetPetsFiltered(int partnerId, GetPetsFilteredRequest request)
+        public async Task<IActionResult> PostPetsFiltered(int partnerId, GetPetsFilteredRequest request)
         {
             var pets = await _service.FetchByFilterAsync(partnerId, request.PetFilter);
 
