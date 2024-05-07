@@ -36,6 +36,22 @@ namespace Caramel.Services.Pattern.Tests
         }
 
         [Fact]
+        public async Task GetPartner_SuccessAsync()
+        {
+            int partnerId = 6;
+
+            HttpResponseMessage response = await _httpClient.GetAsync($"api/v1/partners/{partnerId}");
+
+            var body = await response.Content.ReadAsStringAsync();
+            var customResponse = JsonSerializer.Deserialize<CustomResponse<Partner>>(body);
+
+            Assert.True(response.IsSuccessStatusCode);
+            Assert.Equal(StatusProcess.Success, customResponse.Status);
+            Assert.Equal("Processado com Sucesso", customResponse.Description);
+        }
+
+
+        [Fact]
         public async Task PostPartner_SuccessAsync()
         {
             var partnerRequest = new PartnerRequest
@@ -47,6 +63,7 @@ namespace Caramel.Services.Pattern.Tests
                 Cnpj = "testeCNPJ1",
                 AdoptionRate = 1
             };
+
             var options = new JsonSerializerOptions()
             {
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
@@ -178,7 +195,7 @@ namespace Caramel.Services.Pattern.Tests
         }
 
         [Fact]
-        public async Task DeletePartner_NotFoundAsync()
+        public async Task DeletePartner_ExceptionAsync()
         {
             int partnerId = 9999;
             

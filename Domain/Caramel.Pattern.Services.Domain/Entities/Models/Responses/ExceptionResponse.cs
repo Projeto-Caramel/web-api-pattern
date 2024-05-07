@@ -13,6 +13,7 @@ namespace Caramel.Pattern.Services.Domain.Entities.Models.Responses
         [JsonPropertyName("errorDetails")]
         public object ErrorDetails { get; set; }
 
+        [JsonConstructor]
         public ExceptionResponse(StatusProcess status, object details)
         {
             Status = status;
